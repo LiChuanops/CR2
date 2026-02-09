@@ -1,30 +1,45 @@
-import { useEffect } from "react";
-import { Input } from "@/components/ui/input";
-import { useBarcodeScanner } from "@/hooks/useBarcodeScanner";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 import { useStockTake } from "@/context/StockTakeContext";
+import { useOperators } from "@/hooks/useOperators";
+import { useOfflineSubmit } from "@/hooks/useOfflineSubmit";
 
-export function BarcodeInput() {
-  const { inputRef, handleInput, handleKeyDown } = useBarcodeScanner();
-  const { state } = useStockTake();
-
-  // Refocus barcode input when modal/alert closes or page switches to scan
-  useEffect(() => {
-    if (state.currentPage === "scan" && !state.modalOpen && !state.alert.open) {
-      setTimeout(() => inputRef.current?.focus(), 100);
-    }
-  }, [state.modalOpen, state.alert.open, state.currentPage, inputRef]);
+export function SubmitSection() {
+  const { state, dispatch } = useStockTake();
+  const { operators } = useOperators();
+  const { submitToGoogleSheet } = useOfflineSubmit();
 
   return (
-    <div className="bg-card p-4 rounded-lg mb-4 border border-border">
-      <Input
-        ref={inputRef}
-        type="text"
-        placeholder="扫描条码 | Scan Barcode"
-        autoFocus
-        onChange={(e) => handleInput(e.target.value)}
-        onKeyDown={(e) => handleKeyDown(e, e.currentTarget.value)}
-        className="text-base h-11"
-      />
+    <div className="bg-card p-4 rounded-lg text-center border border-border">
+      <Select
+        value={state.operator}
+        onValueChange={(v) => dispatch({ type: "SET_OPERATOR", operator: v })}
+      >
+        <SelectTrigger className="w-full mb-3 h-11">
+          <SelectValue placeholder="盘点人员 | Operator" />
+        </SelectTrigger>
+        <SelectContent className="max-h-[60vh]">
+          {operators.map((op) => (
+            <SelectItem key={op.id} value={op.name} className="py-3 text-base">
+              {op.name}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+
+      <Button
+        className="w-full h-11"
+        disabled={state.isSubmitting}
+        onClick={() => submitToGoogleSheet(state.operator)}
+      >
+        {state.isSubmitting ? "提交中... | Submitting..." : "保存 | Save"}
+      </Button>
     </div>
   );
 }
