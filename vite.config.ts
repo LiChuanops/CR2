@@ -5,6 +5,7 @@ import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
+  base: '/CR2/',
   plugins: [
     react(),
     tailwindcss(),
@@ -15,20 +16,20 @@ export default defineConfig({
         name: 'CR2 Stock Take',
         short_name: 'CR2 Scanner',
         description: 'Coldroom 2 Stock Take PWA',
-        start_url: '/',
+        start_url: '/CR2/',
         display: 'standalone',
         background_color: '#ffffff',
         theme_color: '#0f172a',
         orientation: 'portrait',
         icons: [
           {
-            src: '/icons/CR2icon-192x192.png',
+            src: 'icons/CR2icon-192x192.png',
             sizes: '192x192',
             type: 'image/png',
             purpose: 'any',
           },
           {
-            src: '/icons/icon-512x512.png',
+            src: 'icons/icon-512x512.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'any',
