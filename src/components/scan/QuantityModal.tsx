@@ -77,16 +77,16 @@ export function QuantityModal() {
         if (!open) dispatch({ type: "CLOSE_MODAL" });
       }}
     >
-      <DialogContent className="w-[90%] max-w-md">
+      <DialogContent className="w-[95%] max-w-lg">
         <DialogHeader>
-          <DialogTitle className="text-lg">{product.name}</DialogTitle>
-          <DialogDescription>{product.packaging}</DialogDescription>
+          <DialogTitle className="text-xl">{product.name}</DialogTitle>
+          <DialogDescription className="text-base">{product.packaging}</DialogDescription>
         </DialogHeader>
 
-        <div className="grid gap-3 mt-2">
+        <div className="grid gap-4 mt-2">
           {hasCTN && (
             <>
-              <label className="font-semibold text-foreground">
+              <label className="font-semibold text-foreground text-base">
                 箱数量 | Ctn Qty：
               </label>
               <Input
@@ -97,12 +97,13 @@ export function QuantityModal() {
                 value={boxQty}
                 onChange={(e) => setBoxQty(e.target.value)}
                 onKeyDown={handleBoxKeyDown}
+                className="h-12 text-lg"
               />
             </>
           )}
           {hasPKT && (
             <>
-              <label className="font-semibold text-foreground">
+              <label className="font-semibold text-foreground text-base">
                 散货数量 | Pkt Qty：
               </label>
               <Input
@@ -113,16 +114,17 @@ export function QuantityModal() {
                 value={pieceQty}
                 onChange={(e) => setPieceQty(e.target.value)}
                 onKeyDown={handlePieceKeyDown}
+                className="h-12 text-lg"
               />
             </>
           )}
         </div>
 
         <div className="grid grid-cols-2 gap-3 mt-4">
-          <Button className="h-11" onClick={handleSubmit}>确认 | Confirm</Button>
+          <Button className="h-12 text-base" onClick={handleSubmit}>确认 | Confirm</Button>
           <Button
             variant="outline"
-            className="h-11"
+            className="h-12 text-base"
             onClick={() => dispatch({ type: "CLOSE_MODAL" })}
           >
             取消 | Cancel
